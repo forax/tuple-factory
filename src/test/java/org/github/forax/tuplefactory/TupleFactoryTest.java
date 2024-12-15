@@ -9,8 +9,32 @@ public class TupleFactoryTest {
   public void example() {
     var factory = TupleFactory.of(String.class, int.class);
     var tuple = factory.tuple("foo", 2);
-    System.out.println((String)factory.get(tuple, 0));
-    System.out.println(factory.getInt(tuple, 1));
+    System.out.println((String)factory.get(tuple, 0));  // foo
+    System.out.println(factory.getInt(tuple, 1));  // 2
+    System.out.println(tuple.getClass().isRecord());  // true
+  }
+
+  //@Test
+  public void example2() {
+    class Bar {
+      private static final TupleFactory FACTORY = TupleFactory.of(Object.class, int.class);
+
+      void bar(Object tuple) {
+        FACTORY.requireTuple(tuple);  // dynamic check
+        System.out.println(tuple);  // Tuple/0x000003e0011148e0[0=foo, 1=2]
+      }
+    }
+
+    class Foo {
+      private static final TupleFactory FACTORY = TupleFactory.of(String.class, int.class);
+
+      void foo() {
+        var tuple = FACTORY.tuple("foo", 2);
+        new Bar().bar(tuple);
+      }
+    }
+
+    new Foo().foo();
   }
 
   @Test
@@ -21,6 +45,13 @@ public class TupleFactoryTest {
         () -> assertEquals("foo", factory.get(tuple, 0)),
         () -> assertEquals(2, factory.getInt(tuple, 1))
     );
+  }
+
+  @Test
+  public void tupleIsARecord() {
+    var factory = TupleFactory.of(double.class, double.class);
+    var tuple = factory.tuple(2.0, 4.0);
+    assertTrue(tuple.getClass().isRecord());
   }
 
   @Test
