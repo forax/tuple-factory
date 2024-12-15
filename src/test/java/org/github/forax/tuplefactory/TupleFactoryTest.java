@@ -5,6 +5,14 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TupleFactoryTest {
+  //@Test
+  public void example() {
+    var factory = TupleFactory.of(String.class, int.class);
+    var tuple = factory.tuple("foo", 2);
+    System.out.println((String)factory.get(tuple, 0));
+    System.out.println(factory.getInt(tuple, 1));
+  }
+
   @Test
   public void tuple() {
     var factory = TupleFactory.of(String.class, int.class);
