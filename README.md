@@ -10,7 +10,7 @@ Tuples
 
 WARNING! to work correctly in terms of performance, all `TupleFactory` must be stored in a static final field 
 
-### Example of usage
+### Examples
 
 A simple example
 ```java
